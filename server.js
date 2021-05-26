@@ -1,12 +1,19 @@
-const http = require('http');
+const express = require('express');
+
+const app = express();
+const port = 3000;
 
 
-const server = http.createServer(requestHendler);
+app.get('/', (req, res) => {
+    res.send('Welcome Page');
+});
 
+app.get('/catalog', (req, res) => {
+    res.send('Hello, Express!');
+});
 
-function requestHendler(req, res) {
-    res.write('Gys do gys');
-    res.end();
-}
+app.get('/edit', (req, res) => {
+    res.redirect('catalog');
+});
 
-server.listen(3000);
+app.listen(port, () => console.log('Server is listening on port ' + `${port}`));
