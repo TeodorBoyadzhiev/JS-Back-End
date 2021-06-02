@@ -22,10 +22,21 @@ async function init() {
     }
 }
 
-async function getAll() {
-    return Object
+async function getAll(query) {
+    let cubes = Object
         .entries(data)
         .map(([id, v]) => Object.assign({}, { id }, v));
+    
+    if (query.search) {
+        cubes = cubes.filter(c => c.name.toLowerCase().includes(query.search.toLowerCase()));
+    }
+    if (query.from) {
+        cubes = cubes.filter(c => c.difficulty >= Number(query.from));
+    }
+    if (query.to) {
+        cubes = cubes.filter(c => c.difficulty <= Number(query.to));
+    }
+    return cubes;
 }
 
 async function getById(id) {
