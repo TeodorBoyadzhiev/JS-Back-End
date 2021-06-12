@@ -1,5 +1,5 @@
 <h1>Browser</h1>
-<form action="/" method="GET">
+<form action="/products" method="GET">
   <input type="text" class="search" name="search" placeholder="Search...">
   <input type="number" name="from" class="difficulty" placeholder="Difficulty from...">
   <span>-</span>
@@ -9,5 +9,5 @@
 {{#each cubes}}
 {{> cube}}
 {{else}} 
-<span>No cubes in database. <a style="color:chartreuse" href="/create">Create the first one</a></span>
+<span>No cubes in database. <a style="color:chartreuse" href="/products/create">Create the first one</a></span>
 {{/each}}
