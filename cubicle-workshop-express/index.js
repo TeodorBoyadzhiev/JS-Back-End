@@ -15,8 +15,9 @@ async function start() {
 
     app.use(logger());
 
-    expressConfig(app);
     await databaseConfig(app);
+    expressConfig(app);
+    
     app.use(await storage());
     routsConfig(app);
 

@@ -1,7 +1,5 @@
 const Accessory = require('../models/Accessory');
 
-
-
 async function getAllAccessory(existing) {
     return Accessory.find({ _id: { $nin: existing }}).lean();
 }

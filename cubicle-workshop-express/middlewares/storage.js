@@ -4,7 +4,7 @@ const accessoryService = require('../services/accessory');
 
 async function init() {
     return (req, res, next) => {
-        const storage = Object.Assign({}, productService, accessoryService);
+        const storage = Object.assign({}, productService, accessoryService);
         req.storage = storage;
         next();
     };
