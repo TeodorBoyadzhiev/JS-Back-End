@@ -13,7 +13,9 @@
     <div id="container">
 
         <div class="notification loadingBox">
-            Loading …
+            {{#each errors}}
+        <p><span>{{this}}</span></p>
+            {{/each}}
         </div>
         <div class="notification infoBox">
             <span>Info</span>

@@ -10,6 +10,7 @@ module.exports = (app) => {
         });
 
         const db = mongoose.connection;
+        
         db.on('error', (err) => {
             console.error('connection error:', err);
             reject(err);
