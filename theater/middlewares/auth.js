@@ -6,11 +6,12 @@ const userService = require('../services/user');
 const { TOKEN_SECRET, COOKIE_NAME, rounds } = require('../config');
 
 
-module.exports = (req, res, next) => {
+module.exports = () => (req, res, next) => {
 
     if (parseToken(req, res)) {
         req.auth = {
             async register(username, password) {
+                
                 const token = await register(username, password);
                 res.cookie(COOKIE_NAME, token);
             },
@@ -18,7 +19,7 @@ module.exports = (req, res, next) => {
                 const token = await login(username, password);
                 res.cookie(COOKIE_NAME, token);
             },
-            async logout() {
+            logout() {
                 res.clearCookie(COOKIE_NAME);
             }
         };
@@ -41,6 +42,7 @@ async function register(username, password) {
 
     const user = await userService.createUser(username, hashedPassword);
 
+
     return generateToken(user);
 }
 
@@ -48,18 +50,22 @@ async function login(username, password) {
     const user = await userService.getUserByUsername(username);
 
     if (!user) {
-        throw new Error('No such user!');
+        const error = new Error('No such user!');
+        error.type = 'credential';
+
+        throw error;
     }
 
     const hasMatch = await bcrypt.compare(password, user.hashedPassword);
 
     if (!hasMatch) {
-        throw new Error('Incorect password');
+        const error = new Error('Incorect password');
+        error.type = 'credential';
+
+        throw error;
     }
 
     return generateToken(user);
-
-
 }
 
 
@@ -85,6 +91,6 @@ function parseToken(req, res) {
 
             return false;
         }
-        return true;
-    };
+    }
+    return true;
 }
