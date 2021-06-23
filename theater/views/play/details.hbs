@@ -15,14 +15,15 @@
             {{#if hasUser}}
             <div class="buttons">
                 {{#if isAuthor}}
-                <a class="btn delete" href="">Delete</a>
-                <a class="btn edit" href="">Edit</a>
-                {{else}}
-                {{#if liked}}
+                <a class="btn delete" href="/play/delete/{{_id}}">Delete</a>
+                <a class="btn edit" href="/play/edit/{{_id}}">Edit</a>
+
+                    {{#if liked}}
                 <span class="liked">You have already liked this play!</span>
-                {{else}}
+                    {{else}}
                 <a class="btn like" href="">Like</a>
-                {{/if}}
+                    {{/if}}
+
                 {{/if}}
             </div>
             {{/if}}

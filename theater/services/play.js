@@ -12,7 +12,7 @@ async function getAllPlays() {
 
 
 async function getPlayById(id) {
-    return Play.findById(id).populate({ usersLiked }).lean();
+    return Play.findById(id).populate('usersLiked').lean();
 
 }
 
@@ -21,7 +21,7 @@ async function getPlayById(id) {
 
 async function createPlay(playData) {
     const pattern = new RegExp(`^${playData.title}$`, 'i');
-    const existing = await Play.find({ title: { $regex: pattern } });
+    const existing = await Play.findOne({ title: { $regex: pattern } });
 
     if (existing) {
         throw new Error('A play with this name already exists');
@@ -50,10 +50,7 @@ async function editPlay(id, playData) {
 
 async function deletePlay(id) {
 
-
-
-
-
+    return Play.findByIdAndDelete(id);
 
 }
 
