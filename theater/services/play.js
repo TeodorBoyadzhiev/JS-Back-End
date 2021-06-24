@@ -4,6 +4,9 @@ const Play = require('../models/Play');
 
 async function getAllPlays() {
 
+    let sort = { craetedAt: -1 };
+    if(order) //TODO
+     
     return Play.find({ public: true }).sort({ createdAt: -1 }).lean();
 
 }
@@ -41,9 +44,17 @@ async function createPlay(playData) {
 
 async function editPlay(id, playData) {
 
+    const play = await Play.findById(id);
+
+    play.title = playData.title;
+    play.description = playData.description;
+    play.imageUrl = playData.imageUrl;
+    play.public = Boolean(playData.public);
+
+
+    return play.save();
+
 }
-
-
 
 
 
@@ -51,6 +62,17 @@ async function editPlay(id, playData) {
 async function deletePlay(id) {
 
     return Play.findByIdAndDelete(id);
+
+}
+
+
+async function likePlay(playId, userId) {
+    
+    const play = await Play.findById(playId);
+
+    play.usersLiked.push(userId);
+
+    play.save();
 
 }
 
@@ -63,7 +85,8 @@ module.exports = {
     getPlayById,
     createPlay,
     editPlay,
-    deletePlay
+    deletePlay,
+    likePlay
 };
 
 

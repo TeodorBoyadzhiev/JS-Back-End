@@ -18,15 +18,16 @@
                 <a class="btn delete" href="/play/delete/{{_id}}">Delete</a>
                 <a class="btn edit" href="/play/edit/{{_id}}">Edit</a>
 
-                    {{#if liked}}
+                {{else}}
+                {{#if liked}}
                 <span class="liked">You have already liked this play!</span>
-                    {{else}}
-                <a class="btn like" href="">Like</a>
-                    {{/if}}
-
+                {{else}}
+                <a class="btn like" href="/play/like/{{_id}}">Like</a>
+                {{/if}}
                 {{/if}}
             </div>
             {{/if}}
+
         </section>
     </div>
     {{/with}}
