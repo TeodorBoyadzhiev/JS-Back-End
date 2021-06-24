@@ -45,7 +45,7 @@ async function register(username,email, password) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await userService.createUser(username,email, hashedPassword);
-
+    
     return generateToken(user);
 }
 
@@ -81,6 +81,7 @@ function parseToken(req, res) {
             const userData = jwt.verify(token, TOKEN_SECRET);
             req.user = userData;
             res.locals.user = userData;
+
         } catch (err) {
             res.clearCookie(COOKIE_NAME);
             res.redirect('/auth/login');

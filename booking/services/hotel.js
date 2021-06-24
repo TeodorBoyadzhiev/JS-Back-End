@@ -8,7 +8,7 @@ async function createHotel(hotelData) {
 }
 
 async function getAllHotels() {
-    const hotels = await Hotel.find({}).lean();
+    const hotels = await Hotel.find({}).populate('bookedBy').lean();
 
     return hotels;
 }
@@ -19,8 +19,41 @@ async function getHotelById(id) {
     return hotel;
 }
 
+async function editHotel(hotelId, hotelData) {
+    const hotel = await Hotel.findById(hotelId);
+
+    hotel.name = hotelData.name;
+    hotel.city = hotelData.city;
+    hotel.rooms = hotelData.rooms;
+    hotel.imageUrl = hotelData.imageUrl;
+
+    return hotel.save();
+
+}
+
+
+async function bookHotel(userId, hotelId) {
+    
+    const hotel = await Hotel.findById(hotelId);
+
+    hotel.bookedBy.push(userId);
+
+    await hotel.save();
+
+}
+
+
+async function deleteHotel(hotelId) {
+
+    return Hotel.findByIdAndDelete(hotelId);
+}
+
+
 module.exports = {
     createHotel,
     getAllHotels,
-    getHotelById
+    getHotelById,
+    bookHotel,
+    editHotel,
+    deleteHotel
 };
