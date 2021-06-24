@@ -2,12 +2,14 @@ const Play = require('../models/Play');
 
 
 
-async function getAllPlays() {
+async function getAllPlays(orderBy) {
 
-    let sort = { craetedAt: -1 };
-    if(order) //TODO
+    let sort = { createdAt: 'asc' }; 
+    if (orderBy == 'likes') {
+        sort = { usersLiked: 'desc' };
+    }
      
-    return Play.find({ public: true }).sort({ createdAt: -1 }).lean();
+    return Play.find({ public: true }).sort(sort).lean();
 
 }
 
