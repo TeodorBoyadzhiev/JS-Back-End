@@ -9,7 +9,7 @@ router.get('/register', isGuest(), (req, res) => {
 router.post('/register', isGuest(),
     body('email', 'Invalid Email').isEmail(),
     body('password')
-        .isLength({ mid: 3 }).withMessage('Password must be at least 5 charecters long!').bail()
+        .isLength({ min: 5 }).withMessage('Password must be at least 5 charecters long!').bail()
         .matches(/[a-zA-z0-9]/).withMessage('Password may contain only english letters and numbers!'),
     body('rePass').custom((value, { req }) => {
         if (value != req.body.password) {

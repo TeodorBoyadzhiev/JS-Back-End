@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { isUser } = require('../middlewares/guards');
+const { parseError } = require('../util/parsers');
 
 router.get('/create', isUser(), (req, res) => {
     res.render('hotel/create');
@@ -22,15 +23,11 @@ router.post('/create', isUser(), async (req, res) => {
 
         res.redirect('/');
     } catch (err) {
-        let errors;
-        if (err.errors) {
-            errors = Object.values(err.errors).map(e => e.properties.message);
-        } else {
-            errors = [err.message];
-        }
 
+        console.log(err);
+        console.log(err.errors)
         const ctx = {
-            errors: [err.messages],
+            errors: parseError(err),
             hotelData: {
                 name: req.body.name,
                 city: req.body.city,
@@ -62,21 +59,20 @@ router.get('/details/:id', isUser(), async (req, res) => {
 router.get('/book/:id', isUser(), async (req, res) => {
 
     try {
-
-        const hotel = await req.hotel.getHotelById(req.params.id);
+        const hotel = await req.storage.getHotelById(req.params.id);
 
         if (hotel.owner == req.user._id) {
             throw new Error('You cannot book your own hotel!');
         }
 
-        await req.hotel.bookHotel(req.user._id, req.params.id);
+        await req.storage.bookHotel(req.user._id, req.params.id);
 
         res.redirect('/hotel/details/' + req.params.id);
 
 
     } catch (err) {
 
-
+console.log(err)
         res.redirect('/hotel/details/' + req.params.id);
 
 
@@ -113,9 +109,19 @@ router.post('/edit/:id', isUser(), async (req, res) => {
 
 
     } catch (err) {
-        console.log(err);
 
-        res.redirect('/hotel/edit/' + req.params.id);
+        const ctx = {
+            errors: parseError(err),
+            hotel: {
+                _id: req.params.id,
+                name: req.body.name,
+                city: req.body.city,
+                imageUrl: req.body.imageUrl,
+                rooms: req.body.rooms
+            }
+        };
+
+        res.render('hotel/edit', ctx);
     }
 });
 
