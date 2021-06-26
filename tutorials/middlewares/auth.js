@@ -41,13 +41,13 @@ async function register(username, password) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await userService.createUser(username, hashedPassword);
-    
+
     return generateToken(user);
 }
 
 async function login(username, password) {
     const user = await userService.getUserByUsername(username);
-
+console.log(user)
     if (!user) {
         throw new Error('No such user');
     }
@@ -78,6 +78,7 @@ function parseToken(req, res) {
             res.locals.user = userData;
 
         } catch (err) {
+            console.log(err)
             res.clearCookie(COOKIE_NAME);
             res.redirect('/auth/login');
 
