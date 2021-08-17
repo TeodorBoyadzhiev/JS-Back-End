@@ -1,4 +1,5 @@
 const Trip = require('../models/Trip');
+const User = require('../models/User');
 
 async function createTrip(tripData) {
     const trip = new Trip(tripData);
@@ -17,6 +18,15 @@ async function getTripById(id) {
     const trip = await Trip.findById(id).lean();
 
     return trip;
+}
+
+async function joinTrip(tripId, userId) {
+    const trip = await Trip.findById(tripId);
+    const user = await User.findOne({_id:userId});
+    trip.buddies.push(userId);
+    user.tripHistory.push(tripId);
+    trip.seats -= 1;
+    return Promise.all([user.save(), trip.save()]);
 }
 
 async function editTrip(tripId, tripData) {
@@ -49,6 +59,7 @@ module.exports = {
     createTrip,
     getAllTrips,
     getTripById,
+    joinTrip,
     editTrip,
     deleteTrip
 };

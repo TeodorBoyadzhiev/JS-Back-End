@@ -90,6 +90,18 @@ router.get('/details/:id', async (req, res) => {
 });
 
 
+router.get('/details/:id/join', isUser(), async (req, res) => {
+    try {
+        const trip = await req.storage.joinTrip(req.params.id, req.user._id);
+        res.redirect('/trip/details/:id')
+    } catch (err) {
+        console.log(err);
+        res.render('trip/create')
+   }
+    
+});
+
+
 
 router.get('/edit/:id', isUser(), async (req, res) => {
 

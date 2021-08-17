@@ -52,7 +52,7 @@
                         <span class="btn btn-info">Already joined. Don't be late!</span>
                         {{else}}
                         {{#if trip.seatsLeft}}
-                        <a href="" class="btn btn-join">Join now, {{trip.seatsLeft}} seats left!</a>
+                        <a href="/trip/details/{{trip._id}}/join" class="btn btn-join">Join now, {{trip.seatsLeft}} seats left!</a>
                         <!-- logged in user with no available seats -->
                         {{else}}
                         <span class="btn btn-secondary">No seats available! [0]</span>
