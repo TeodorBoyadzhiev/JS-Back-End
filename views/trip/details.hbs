@@ -42,10 +42,11 @@
                     <!-- if there are no logged in user do not show div with class actions  -->
                     <div class="actions">
                         <!-- Only for logged user and creator to this trip -->
+                        {{#if trip.isAuthor}}
                         <a href="/trip/delete/{{trip._id}}" class="btn btn-danger">Delete this trip</a>
                         <a href="/trip/edit/{{trip._id}}" class="btn btn-warning">Edit this trip</a>
-
                         <!-- logged in user with available seats -->
+                        {{else}}
                         {{#if trip.buddie}}
                         <!-- logged in user and has already joined the trip  -->
                         <span class="btn btn-info">Already joined. Don't be late!</span>
@@ -57,6 +58,8 @@
                         <span class="btn btn-secondary">No seats available! [0]</span>
                         {{/if}}
                         {{/if}}
+                        {{/if}}
+
                     </div>
 
                 </div>

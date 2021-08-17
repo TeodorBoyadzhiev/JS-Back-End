@@ -18,18 +18,18 @@ router.post('/create', isUser(), async (req, res) => {
             time: req.body.time,
             carImage: req.body.carImage,
             carBrand: req.body.carBrand,
-            seats: req.body.seats,
-            price: req.body.price,
+            seats: Number(req.body.seats),
+            price: Number(req.body.price),
             description: req.body.description,
-            creator: req.user._id
+            creator: req.user._id,
         };
 
 
         await req.storage.createTrip(tripData);
 
-        res.redirect('/');
+        res.redirect('/trip/trips');
     } catch (err) {
-        console.log(err)
+        console.log(err);
         const ctx = {
             errors: parseError(err),
             tripData: {
@@ -63,16 +63,19 @@ router.get('/details/:id', async (req, res) => {
     try {
         const trip = await req.storage.getTripById(req.params.id);
 
+        const seatsLeft = Number(trip.seats) - Number((trip.buddies).length);
 
-        const seatsLeft = Number(trip.seats) - Number(trip.buddies).length;
         if (seatsLeft > 0) {
             trip.seatsLeft = seatsLeft;
         } else {
             trip.seatsLeft = 0;
         }
+
+
         trip.isAuthor = req.user && req.user._id == trip.creator;
-        trip.driverEmail = req.user.email;
         trip.buddie = req.user && trip.buddies.find(b => b._id == req.user._id);
+
+        console.log(trip)
 
         if (trip.buddies.length < 1) {
             trip.buddies = false;
